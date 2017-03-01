@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FluentMap<K, V> implements Map<K, V> {
 
