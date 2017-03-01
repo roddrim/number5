@@ -21,7 +21,6 @@ import lombok.AllArgsConstructor;
 
 import java.util.*;
 
-
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class FluentList<E> implements List<E> {
 

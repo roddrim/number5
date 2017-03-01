@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FluentTable<R, C, V> implements Table<R, C, V> {
 
