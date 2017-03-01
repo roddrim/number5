@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import java.util.*;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class FluentSet<E> implements Set<E> {
+public final class FluentSet<E> implements Set<E> {
 
     private final Set<E> delegate;
 
