@@ -16,6 +16,7 @@
 package net.roddrim.number5.web.ui;
 
 import com.google.common.base.Function;
+import lombok.experimental.UtilityClass;
 import org.openqa.selenium.WebDriver;
 
 import java.util.concurrent.TimeUnit;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @UtilityClass
 public class CustomConditions {
 
-    public static Function<WebDriver, Boolean> waitForSeconds(final long seconds) {
-        return new Wait(seconds, TimeUnit.SECONDS);
+    public static Function<WebDriver, Boolean> waitForSeconds(final long amount, TimeUnit timeUnit) {
+        return new Wait(amount, timeUnit);
     }
 }

@@ -15,15 +15,15 @@
  */
 package net.roddrim.number5.web;
 
+import net.roddrim.number5.web.ui.CustomConditions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-
-import net.roddrim.number5.web.ui.CustomConditions;
 
 public class BrowserBot {
 
@@ -63,7 +63,7 @@ public class BrowserBot {
 
     public void waitFor(final long seconds) {
         if (seconds > 0) {
-            wait.until(CustomConditions.waitForSeconds(seconds));
+            wait.until(CustomConditions.waitForSeconds(seconds, TimeUnit.SECONDS));
         }
     }
 
