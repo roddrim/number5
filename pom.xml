@@ -6,8 +6,12 @@
     <groupId>net.roddrim</groupId>
     <artifactId>number5</artifactId>
     <version>1.0-SNAPSHOT</version>
+    
+    <modules>
+        <module>number5-tools</module>
+    </modules>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>number5</name>
 
