@@ -18,10 +18,7 @@ package net.roddrim.number5.tools.collect;
 import com.google.common.collect.Table;
 import lombok.experimental.UtilityClass;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 
 @UtilityClass
@@ -37,6 +34,22 @@ public class N5Collections {
 
     public static <T> Iterable<T> iterable(final Iterator<T> i) {
         return () -> i;
+    }
+
+    public static <T> Iterable<T> iterable(final Enumeration<T> enumeration) {
+        return () -> {
+            return new Iterator<T>() {
+                @Override
+                public boolean hasNext() {
+                    return enumeration.hasMoreElements();
+                }
+
+                @Override
+                public T next() {
+                    return enumeration.nextElement();
+                }
+            };
+        };
     }
 
     @SafeVarargs

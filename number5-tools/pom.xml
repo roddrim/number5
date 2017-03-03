@@ -13,4 +13,12 @@
 
     <artifactId>number5-tools</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>1.14</version>
+        </dependency>
+    </dependencies>
+
 </project>
