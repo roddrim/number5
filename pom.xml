@@ -6,7 +6,7 @@
 
     <groupId>net.roddrim</groupId>
     <artifactId>number5</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
 
     <modules>
         <module>number5-tools</module>
