@@ -1,4 +1,5 @@
-package net.roddrim.number5.web.api;/*
+package net.roddrim.number5.web.api;
+/*
  * Copyright 2017 roddrim.net
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +15,26 @@ package net.roddrim.number5.web.api;/*
  * limitations under the License. 
  */
 
-import org.openqa.selenium.Keys;
+import lombok.NonNull;
+import net.roddrim.number5.tools.lang.Pair;
+
+import java.util.concurrent.TimeUnit;
 
 public interface BrowserSession {
 
+    char ENTER = '\uE007';
+
     WebBot getBrowserBot();
 
-    default void selectAndWait(final String text) {
+    Pair<Long, TimeUnit> getDefaultWaitAfterClick();
+
+    default void selectAndWait(@NonNull final String text) {
         getBrowserBot().waitForElementToBeClickable();
         getBrowserBot().select(text);
         getBrowserBot().waitForDefault();
     }
 
-    default void clearSendTextAndWait(final CharSequence text) {
+    default void clearSendTextAndWait(@NonNull final CharSequence text) {
         getBrowserBot().waitForElementToBeClickable();
         getBrowserBot().click();
         getBrowserBot().clear();
@@ -34,12 +42,12 @@ public interface BrowserSession {
         getBrowserBot().waitForDefault();
     }
 
-    default void clearSendTextEnterAndWait(final CharSequence text) {
+    default void clearSendTextEnterAndWait(@NonNull final CharSequence text) {
         getBrowserBot().waitForElementToBeClickable();
         getBrowserBot().click();
         getBrowserBot().clear();
         getBrowserBot().sendText(text);
-        getBrowserBot().sendText(Keys.ENTER);
+        getBrowserBot().sendText(String.valueOf(ENTER));
         getBrowserBot().waitForDefault();
     }
 
@@ -47,6 +55,31 @@ public interface BrowserSession {
         getBrowserBot().waitForElementToBeClickable();
         getBrowserBot().click();
         getBrowserBot().waitForDefault();
+    }
+
+    default void end() {
+        getBrowserBot().endBrowser();
+    }
+
+    default void start() {
+        getBrowserBot().startBrowser();
+        getBrowserBot().waitForDefault();
+    }
+
+    default void sendTextTo(@NonNull final Locate locate, @NonNull final CharSequence text) {
+        getBrowserBot().target(locate);
+        clearSendTextAndWait(text);
+    }
+
+    default void clickElement(@NonNull final Locate locate) {
+        getBrowserBot().target(locate);
+        getBrowserBot().waitForElementToBeClickable();
+        clickAndWait();
+        getBrowserBot().waitFor(getDefaultWaitAfterClick());
+    }
+
+    default Locate locateInputButtonWithValue(@NonNull final String value) {
+        return Locate.xpath("//input[@type='button' and @value='" + value + "']");
     }
 
 }
