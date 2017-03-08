@@ -18,6 +18,7 @@ package net.roddrim.number5.tools.collect;
 import com.google.common.collect.Maps;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -35,12 +36,12 @@ public final class FluentMap<K, V> implements Map<K, V> {
         return this;
     }
 
-    public FluentMap<K, V> map(final Entry<K, V> e) {
+    public FluentMap<K, V> map(@NonNull final Entry<K, V> e) {
         delegate.put(e.getKey(), e.getValue());
         return this;
     }
 
-    public FluentMap<K, V> map(final Map<K, V> m) {
+    public FluentMap<K, V> map(@NonNull final Map<K, V> m) {
         delegate.putAll(m);
         return this;
     }
@@ -53,7 +54,7 @@ public final class FluentMap<K, V> implements Map<K, V> {
         return Collections.unmodifiableMap(this.delegate);
     }
 
-    public V getOrPutDefault(K key, final Supplier<V> defaultValues) {
+    public V getOrPutDefault(K key, @NonNull final Supplier<V> defaultValues) {
         final V v = delegate.get(key);
         if (v == null) {
             delegate.put(key, defaultValues.get());
@@ -69,11 +70,11 @@ public final class FluentMap<K, V> implements Map<K, V> {
         return of(Maps.newLinkedHashMap());
     }
 
-    public static <K, V> FluentMap<K, V> of(final Map<K, V> map) {
+    public static <K, V> FluentMap<K, V> of(@NonNull final Map<K, V> map) {
         return new FluentMap<>(map);
     }
 
-    public static <K, V> FluentMap<K, V> copyOf(final Map<K, V> map) {
+    public static <K, V> FluentMap<K, V> copyOf(@NonNull final Map<K, V> map) {
         return new FluentMap<>(Maps.newLinkedHashMap(map));
     }
 

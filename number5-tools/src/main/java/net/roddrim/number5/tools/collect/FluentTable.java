@@ -19,6 +19,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Collection;
 import java.util.Map;
@@ -30,7 +31,7 @@ public final class FluentTable<R, C, V> implements Table<R, C, V> {
 
     private final Table<R, C, V> delegate;
 
-    public V getOrPutDefault(final R rowKey, final C columnKey, final Supplier<V> defaultValues) {
+    public V getOrPutDefault(final R rowKey, final C columnKey, @NonNull final Supplier<V> defaultValues) {
         final V v = delegate.get(rowKey, columnKey);
         if (v == null) {
             delegate.put(rowKey, columnKey, defaultValues.get());
@@ -47,7 +48,7 @@ public final class FluentTable<R, C, V> implements Table<R, C, V> {
         return of(HashBasedTable.<R, C, V>create());
     }
 
-    public static <R, C, V> FluentTable<R, C, V> of(final Table<R, C, V> table) {
+    public static <R, C, V> FluentTable<R, C, V> of(@NonNull final Table<R, C, V> table) {
         return new FluentTable<>(table);
     }
 

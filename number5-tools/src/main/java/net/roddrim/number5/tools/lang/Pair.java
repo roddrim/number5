@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package net.roddrim.number5.web.ui;
+package net.roddrim.number5.tools.lang;
 
-import com.google.common.base.Function;
-import lombok.experimental.UtilityClass;
-import org.openqa.selenium.WebDriver;
+import lombok.*;
 
-import java.util.concurrent.TimeUnit;
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
+@ToString
+public final class Pair<K, V> {
 
-@UtilityClass
-public class CustomConditions {
+    @Getter
+    private final K key;
 
-    public static Function<WebDriver, Boolean> waitForSeconds(final long amount, TimeUnit timeUnit) {
-        return new Wait(amount, timeUnit);
+    @Getter
+    private final V value;
+
+    public static <K, V> Pair<K, V> of(@NonNull final K key, @NonNull final V value) {
+        return new Pair(key, value);
     }
+
 }

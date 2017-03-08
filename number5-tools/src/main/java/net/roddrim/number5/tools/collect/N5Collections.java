@@ -16,6 +16,7 @@
 package net.roddrim.number5.tools.collect;
 
 import com.google.common.collect.Table;
+import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
 import java.util.*;
@@ -28,15 +29,15 @@ public class N5Collections {
         return i -> isNullOrEmpty(i);
     }
 
-    public static boolean isNullOrEmpty(final Iterable<?> i) {
+    public static boolean isNullOrEmpty(@NonNull final Iterable<?> i) {
         return i == null || i.iterator().hasNext();
     }
 
-    public static <T> Iterable<T> iterable(final Iterator<T> i) {
+    public static <T> Iterable<T> iterable(@NonNull final Iterator<T> i) {
         return () -> i;
     }
 
-    public static <T> Iterable<T> iterable(final Enumeration<T> enumeration) {
+    public static <T> Iterable<T> iterable(@NonNull final Enumeration<T> enumeration) {
         return () -> {
             return new Iterator<T>() {
                 @Override
@@ -53,23 +54,23 @@ public class N5Collections {
     }
 
     @SafeVarargs
-    public static <E> E[] array(final E... elements) {
+    public static <E> E[] array(@NonNull final E... elements) {
         return elements;
     }
 
-    public static <E> FluentList<E> fluent(final List<E> list) {
+    public static <E> FluentList<E> fluent(@NonNull final List<E> list) {
         return FluentList.of(list);
     }
 
-    public static <E> FluentSet<E> fluent(final Set<E> set) {
+    public static <E> FluentSet<E> fluent(@NonNull final Set<E> set) {
         return FluentSet.of(set);
     }
 
-    public static <K, V> FluentMap<K, V> fluent(final Map<K, V> map) {
+    public static <K, V> FluentMap<K, V> fluent(@NonNull final Map<K, V> map) {
         return FluentMap.of(map);
     }
 
-    public static <R, C, V> FluentTable<R, C, V> fluent(final Table<R, C, V> table) {
+    public static <R, C, V> FluentTable<R, C, V> fluent(@NonNull final Table<R, C, V> table) {
         return FluentTable.of(table);
     }
 

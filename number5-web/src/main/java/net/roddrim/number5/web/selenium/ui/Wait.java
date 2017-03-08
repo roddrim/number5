@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.roddrim.number5.web.ui;
+package net.roddrim.number5.web.selenium.ui;
 
 import com.google.common.base.Function;
 import org.openqa.selenium.WebDriver;
@@ -28,6 +28,7 @@ public class Wait implements Function<WebDriver, Boolean> {
         this.millis = unit.toMillis(amount);
     }
 
+    @Override
     public Boolean apply(final WebDriver driver) {
         try {
             Thread.sleep(millis);

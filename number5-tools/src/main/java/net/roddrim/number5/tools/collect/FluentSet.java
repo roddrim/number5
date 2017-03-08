@@ -18,6 +18,7 @@ package net.roddrim.number5.tools.collect;
 import com.google.common.collect.Sets;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 import java.util.*;
 
@@ -31,7 +32,7 @@ public final class FluentSet<E> implements Set<E> {
         return this;
     }
 
-    public FluentSet<E> set(final Collection<E> c) {
+    public FluentSet<E> set(@NonNull final Collection<E> c) {
         delegate.addAll(c);
         return this;
     }
@@ -56,15 +57,15 @@ public final class FluentSet<E> implements Set<E> {
         return of(new TreeSet<E>());
     }
 
-    public static <E> FluentSet<E> of(final E... elements) {
+    public static <E> FluentSet<E> of(@NonNull final E... elements) {
         return of(Sets.newHashSet(elements));
     }
 
-    public static <E> FluentSet<E> of(final Set<E> set) {
+    public static <E> FluentSet<E> of(@NonNull final Set<E> set) {
         return new FluentSet<>(set);
     }
 
-    public static <E> FluentSet<E> copyOf(final Set<E> set) {
+    public static <E> FluentSet<E> copyOf(@NonNull final Set<E> set) {
         return of(Sets.newLinkedHashSet(set));
     }
 

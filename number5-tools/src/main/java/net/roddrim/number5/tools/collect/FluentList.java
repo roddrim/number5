@@ -18,6 +18,7 @@ package net.roddrim.number5.tools.collect;
 import com.google.common.collect.Lists;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 
 import java.util.*;
 
@@ -31,7 +32,7 @@ public final class FluentList<E> implements List<E> {
         return this;
     }
 
-    public FluentList<E> list(final Collection<E> c) {
+    public FluentList<E> list(@NonNull final Collection<E> c) {
         delegate.addAll(c);
         return this;
     }
@@ -52,15 +53,15 @@ public final class FluentList<E> implements List<E> {
         return of(Lists.newLinkedList());
     }
 
-    public static <E> FluentList<E> of(final E... elements) {
+    public static <E> FluentList<E> of(@NonNull final E... elements) {
         return of(Lists.newArrayList(elements));
     }
 
-    public static <E> FluentList<E> of(final List<E> list) {
+    public static <E> FluentList<E> of(@NonNull final List<E> list) {
         return new FluentList<>(list);
     }
 
-    public static <E> FluentList<E> copyOf(final List<E> list) {
+    public static <E> FluentList<E> copyOf(@NonNull final List<E> list) {
         return of(Lists.newArrayList(list));
     }
 
