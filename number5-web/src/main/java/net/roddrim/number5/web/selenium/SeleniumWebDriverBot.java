@@ -1,10 +1,9 @@
 package net.roddrim.number5.web.selenium;
 
-import com.google.common.base.Strings;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import net.roddrim.number5.tools.lang.Pair;
 import net.roddrim.number5.web.api.Locate;
 import net.roddrim.number5.web.api.WebBot;
@@ -18,19 +17,25 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
-@Log4j2
+@Slf4j
 public class SeleniumWebDriverBot implements WebBot {
 
     private final long defaultTimeoutInSeconds;
     private final Supplier<WebDriver> driverSupplier;
 
     private boolean started = false;
+
+    @Getter
     private WebDriver driver;
     private WebDriverWait wait;
+    private Function<Locate, By> translate;
     private By current;
 
     @Getter
@@ -47,6 +52,7 @@ public class SeleniumWebDriverBot implements WebBot {
         if (!started) {
             this.driver = driverSupplier.get();
             this.wait = new WebDriverWait(driver, defaultTimeoutInSeconds);
+            this.translate = translate(driver);
             this.started = true;
         }
     }
@@ -99,68 +105,42 @@ public class SeleniumWebDriverBot implements WebBot {
     }
 
     @Override
-    public String getTextValue() {
+    public String getText() {
         return driver.findElement(current).getText();
     }
 
     @Override
-    public String getAttributeValue(@NonNull final String attributeName) {
+    public String getTagName() {
+        return driver.findElement(current).getTagName();
+    }
+
+    @Override
+    public String getAttribute(@NonNull final String attributeName) {
         return driver.findElement(current).getAttribute(attributeName);
     }
 
+    @Override
+    public List<String> getTexts(final Locate locate) {
+        final List<WebElement> l = driver.findElements(translate.apply(locate));
+        return l.stream().map(e -> e.getText()).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getAttributeValues(final Locate locate, final String attributeName) {
+        final List<WebElement> l = driver.findElements(translate.apply(locate));
+        return l.stream().map(e -> e.getAttribute(attributeName)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getTagNames(final Locate locate) {
+        final List<WebElement> l = driver.findElements(translate.apply(locate));
+        return l.stream().map(e -> e.getTagName()).collect(Collectors.toList());
+    }
 
     @Override
     public void target(@NonNull Locate locate) {
-
-        final String representation = locate.getRepresentation();
-
-        switch (locate.getType()) {
-            case CSS_SELECTOR:
-                elementByCssSelector(representation);
-                return;
-            case ID:
-                elementById(representation);
-                return;
-            case LINK_TEXT:
-                elementByLinkText(representation);
-                return;
-            case XPATH:
-                elementByXPath(representation);
-                return;
-            case LABEL:
-                elementByLabel(representation);
-                return;
-        }
-        throw new IllegalArgumentException(locate.getType() + " not implemented.");
+        this.current = translate.apply(locate);
     }
-
-    private void elementById(final String id) {
-        this.current = By.id(id);
-
-    }
-
-    private void elementByLabel(final String label) {
-        elementByLabel(label, null);
-    }
-
-    private void elementByLabel(final String label, final String suffix) {
-        final String id = driver.findElement(By.xpath("//label[text()='" + label + "']")).getAttribute("for") + (Strings.isNullOrEmpty(suffix) ? "" : suffix);
-        this.current = By.id(id);
-
-    }
-
-    private void elementByXPath(final String xpath) {
-        this.current = By.xpath(xpath);
-    }
-
-    private void elementByLinkText(final String linkText) {
-        this.current = By.xpath("//a[text()='" + linkText + "']");
-    }
-
-    private void elementByCssSelector(final String css) {
-        this.current = By.cssSelector(css);
-    }
-
 
     @Override
     public void select(@NonNull final String text) {
@@ -200,6 +180,33 @@ public class SeleniumWebDriverBot implements WebBot {
     public void endBrowser() {
         driver.quit();
         this.started = false;
+        this.current = null;
+        this.translate = null;
+        this.wait = null;
     }
+
+    private Function<Locate, By> translate(final WebDriver driver) {
+
+        return locate -> {
+
+            final String representation = locate.getRepresentation();
+
+            switch (locate.getType()) {
+                case CSS_SELECTOR:
+                    return By.cssSelector(representation);
+                case ID:
+                    return By.id(representation);
+                case LINK_TEXT:
+                    return By.xpath("//a[text()='" + representation + "']");
+                case XPATH:
+                    return By.xpath(representation);
+                case LABEL:
+                    return By.id(driver.findElement(By.xpath("//label[text()='" + representation + "']")).getAttribute("for"));
+            }
+            throw new IllegalArgumentException(locate.getType() + " not implemented.");
+        };
+
+    }
+
 
 }

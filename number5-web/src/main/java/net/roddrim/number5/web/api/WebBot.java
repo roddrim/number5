@@ -3,22 +3,23 @@ package net.roddrim.number5.web.api;
 import net.roddrim.number5.tools.lang.Pair;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public interface WebBot {
 
-    public Pair<Long, TimeUnit> getDefaultWaitOnAction();
+    Pair<Long, TimeUnit> getDefaultWaitOnAction();
 
-    public void startBrowser();
+    void startBrowser();
 
-    public void getPage(final Object page);
+    void getPage(final Object page);
 
-    public void getPage(final Object... objects);
+    void getPage(final Object... objects);
 
-    public void target(final Locate locate);
+    void target(final Locate locate);
 
-    public void waitFor(final long amount, final TimeUnit unit);
+    void waitFor(final long amount, final TimeUnit unit);
 
     default void waitForDefault() {
         waitFor(getDefaultWaitOnAction());
@@ -28,28 +29,36 @@ public interface WebBot {
         waitFor(time.getKey(), time.getValue());
     }
 
-    public void waitForElementToBeClickable();
+    void waitForElementToBeClickable();
 
-    public void waitForElementToBePresent();
+    void waitForElementToBePresent();
 
-    public void click();
+    void click();
 
-    public void clear();
+    void clear();
 
-    public void sendText(final CharSequence text);
+    void sendText(final CharSequence text);
 
-    public String getTextValue();
+    String getText();
 
-    public String getAttributeValue(final String attributeName);
+    String getAttribute(final String attributeName);
 
-    public void select(final String text);
+    String getTagName();
 
-    public void switchToFrame();
+    List<String> getTexts(final Locate locate);
 
-    public void switchToDefaultFrame();
+    List<String> getAttributeValues(final Locate locate, final String attributeName);
 
-    public Optional<File> takeScreenShot();
+    List<String> getTagNames(final Locate locate);
 
-    public void endBrowser();
+    void select(final String text);
+
+    void switchToFrame();
+
+    void switchToDefaultFrame();
+
+    Optional<File> takeScreenShot();
+
+    void endBrowser();
 
 }
