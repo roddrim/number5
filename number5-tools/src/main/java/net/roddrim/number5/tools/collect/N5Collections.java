@@ -15,6 +15,7 @@
  */
 package net.roddrim.number5.tools.collect;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Table;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -29,8 +30,8 @@ public class N5Collections {
         return i -> isNullOrEmpty(i);
     }
 
-    public static boolean isNullOrEmpty(@NonNull final Iterable<?> i) {
-        return i == null || i.iterator().hasNext();
+    public static <T> boolean isNullOrEmpty(@NonNull final Iterable<T> i) {
+        return i == null || Iterables.isEmpty(i);
     }
 
     public static <T> Iterable<T> iterable(@NonNull final Iterator<T> i) {

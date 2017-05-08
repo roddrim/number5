@@ -1,8 +1,24 @@
+/*
+ * Copyright 2017 roddrim.net
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package net.roddrim.number5.web.selenium;
 
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.roddrim.number5.tools.lang.Pair;
 import net.roddrim.number5.web.api.Locate;
@@ -25,10 +41,14 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Slf4j
+@RequiredArgsConstructor
 public class SeleniumWebDriverBot implements WebBot {
 
-    private final long defaultTimeoutInSeconds;
     private final Supplier<WebDriver> driverSupplier;
+    @Getter
+    private final Pair<Long, TimeUnit> defaultTimeoutInSeconds;
+    @Getter
+    private final Pair<Long, TimeUnit> defaultWaitOnAction;
 
     private boolean started = false;
 
@@ -38,20 +58,11 @@ public class SeleniumWebDriverBot implements WebBot {
     private Function<Locate, By> translate;
     private By current;
 
-    @Getter
-    @Setter
-    private Pair<Long, TimeUnit> defaultWaitOnAction;
-
-    public SeleniumWebDriverBot(final Supplier<WebDriver> driver, final long defaultTimeoutInSeconds) {
-        this.driverSupplier = driver;
-        this.defaultTimeoutInSeconds = defaultTimeoutInSeconds;
-    }
-
     @Override
     public void startBrowser() {
         if (!started) {
             this.driver = driverSupplier.get();
-            this.wait = new WebDriverWait(driver, defaultTimeoutInSeconds);
+            this.wait = new WebDriverWait(driver, defaultTimeoutInSeconds.getValue().toSeconds(defaultTimeoutInSeconds.getKey()));
             this.translate = translate(driver);
             this.started = true;
         }
