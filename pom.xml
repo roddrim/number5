@@ -11,7 +11,6 @@
     <modules>
         <module>number5-tools</module>
         <module>number5-web</module>
-        <module>number5-data</module>
     </modules>
 
     <packaging>pom</packaging>
